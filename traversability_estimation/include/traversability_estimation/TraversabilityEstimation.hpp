@@ -17,7 +17,7 @@
 #include <grid_map_ros/grid_map_ros.hpp>
 
 // Traversability estimation
-#include <traversability_msgs/CheckFootprintPath.h>
+#include <traversability_interfaces/CheckFootprintPath.h>
 
 // ROS
 #include <filters/filter_chain.h>
@@ -83,8 +83,8 @@ class TraversabilityEstimation {
    * @param response the ROS service response containing the traversability of the footprint path.
    * @return true if successful.
    */
-  bool checkFootprintPath(traversability_msgs::CheckFootprintPath::Request& request,
-                          traversability_msgs::CheckFootprintPath::Response& response);
+  bool checkFootprintPath(traversability_interfaces::CheckFootprintPath::Request& request,
+                          traversability_interfaces::CheckFootprintPath::Response& response);
 
   /*!
    * Callback function that receives an image and converts into

@@ -317,8 +317,8 @@ bool TraversabilityMap::traversabilityFootprint(const double& radius, const doub
   return true;
 }
 
-bool TraversabilityMap::checkFootprintPath(const traversability_msgs::FootprintPath& path,
-                                           traversability_msgs::TraversabilityResult& result, const bool publishPolygons) {
+bool TraversabilityMap::checkFootprintPath(const traversability_interfaces::FootprintPath& path,
+                                           traversability_interfaces::TraversabilityResult& result, const bool publishPolygons) {
   bool successfullyCheckedFootprint;
   if (!traversabilityMapInitialized_) {
     ROS_WARN_THROTTLE(periodThrottledConsoleMessages, "Traversability Estimation: check Footprint path: Traversability map not yet initialized.");
@@ -342,8 +342,8 @@ bool TraversabilityMap::checkFootprintPath(const traversability_msgs::FootprintP
   return successfullyCheckedFootprint;
 }
 
-bool TraversabilityMap::checkCircularFootprintPath(const traversability_msgs::FootprintPath& path, const bool publishPolygons,
-                                                   traversability_msgs::TraversabilityResult& result) {
+bool TraversabilityMap::checkCircularFootprintPath(const traversability_interfaces::FootprintPath& path, const bool publishPolygons,
+                                                   traversability_interfaces::TraversabilityResult& result) {
   double radius = path.radius;
   double offset = 0.15;
   grid_map::Position start, end;
@@ -461,8 +461,8 @@ bool TraversabilityMap::checkCircularFootprintPath(const traversability_msgs::Fo
   return true;
 }
 
-bool TraversabilityMap::checkPolygonalFootprintPath(const traversability_msgs::FootprintPath& path, const bool publishPolygons,
-                                                    traversability_msgs::TraversabilityResult& result) {
+bool TraversabilityMap::checkPolygonalFootprintPath(const traversability_interfaces::FootprintPath& path, const bool publishPolygons,
+                                                    traversability_interfaces::TraversabilityResult& result) {
   grid_map::Position start, end;
   const auto arraySize = path.poses.poses.size();
   const bool computeUntraversablePolygon = path.compute_untraversable_polygon;

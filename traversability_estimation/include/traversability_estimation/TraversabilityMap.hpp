@@ -9,8 +9,8 @@
 #pragma once
 
 // Traversability
-#include <traversability_msgs/FootprintPath.h>
-#include <traversability_msgs/TraversabilityResult.h>
+#include <traversability_interfaces/FootprintPath.h>
+#include <traversability_interfaces/TraversabilityResult.h>
 
 // Grid Map
 #include <grid_map_ros/grid_map_ros.hpp>
@@ -66,7 +66,7 @@ class TraversabilityMap {
    * @param[out] result the traversability result.
    * @return true if successful.
    */
-  bool checkFootprintPath(const traversability_msgs::FootprintPath& path, traversability_msgs::TraversabilityResult& result,
+  bool checkFootprintPath(const traversability_interfaces::FootprintPath& path, traversability_interfaces::TraversabilityResult& result,
                           const bool publishPolygons = false);
 
   /*!
@@ -289,8 +289,8 @@ class TraversabilityMap {
    * @param[out] result the traversability result.
    * @return true if successful.
    */
-  bool checkCircularFootprintPath(const traversability_msgs::FootprintPath& path, const bool publishPolygons,
-                                  traversability_msgs::TraversabilityResult& result);
+  bool checkCircularFootprintPath(const traversability_interfaces::FootprintPath& path, const bool publishPolygons,
+                                  traversability_interfaces::TraversabilityResult& result);
 
   /*!
    * Checks the traversability of a polygonal footprint path and returns the traversability.
@@ -299,8 +299,8 @@ class TraversabilityMap {
    * @param[out] result the traversability result.
    * @return true if successful.
    */
-  bool checkPolygonalFootprintPath(const traversability_msgs::FootprintPath& path, const bool publishPolygons,
-                                   traversability_msgs::TraversabilityResult& result);
+  bool checkPolygonalFootprintPath(const traversability_interfaces::FootprintPath& path, const bool publishPolygons,
+                                   traversability_interfaces::TraversabilityResult& result);
 
   /*!
    * Computes mean height from poses.

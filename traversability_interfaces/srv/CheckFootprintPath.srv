@@ -1,7 +1,7 @@
 # Footprint path to check.
-traversability_msgs/FootprintPath[] path
+traversability_interfaces/FootprintPath[] path
 
 ---
 
 # Traversability results
-traversability_msgs/TraversabilityResult[] result
+traversability_interfaces/TraversabilityResult[] result

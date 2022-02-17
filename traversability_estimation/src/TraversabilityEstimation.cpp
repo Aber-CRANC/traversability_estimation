@@ -8,7 +8,7 @@
 
 #include "traversability_estimation/TraversabilityEstimation.hpp"
 #include "traversability_estimation/common.h"
-#include <traversability_msgs/TraversabilityResult.h>
+#include <traversability_interfaces/TraversabilityResult.h>
 #include <param_io/get_param.hpp>
 
 // ROS
@@ -275,16 +275,16 @@ bool TraversabilityEstimation::traversabilityFootprint(std_srvs::Empty::Request&
   return true;
 }
 
-bool TraversabilityEstimation::checkFootprintPath(traversability_msgs::CheckFootprintPath::Request& request,
-                                                  traversability_msgs::CheckFootprintPath::Response& response) {
+bool TraversabilityEstimation::checkFootprintPath(traversability_interfaces::CheckFootprintPath::Request& request,
+                                                  traversability_interfaces::CheckFootprintPath::Response& response) {
   const int nPaths = request.path.size();
   if (nPaths == 0) {
     ROS_WARN_THROTTLE(periodThrottledConsoleMessages, "No footprint path available to check!");
     return false;
   }
 
-  traversability_msgs::TraversabilityResult result;
-  traversability_msgs::FootprintPath path;
+  traversability_interfaces::TraversabilityResult result;
+  traversability_interfaces::FootprintPath path;
   for (int j = 0; j < nPaths; j++) {
     path = request.path[j];
     if (!traversabilityMap_.checkFootprintPath(path, result, true)) return false;

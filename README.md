@@ -98,7 +98,7 @@ This is the main Traversability Estimation node. It uses the elevation map and t
 
         rosservice call -- /traversability_estimation/get_traversability -1.0 0.0 2.5 2.0 []
 
-* **`check_footprint_path`** ([traversability_msgs/CheckFootprintPath])
+* **`check_footprint_path`** ([traversability_interfaces/CheckFootprintPath])
 
     This service is used to check the traversability of a single footprint or a path of several footprints. The current traversability map is used to evaluate the footprints.
 

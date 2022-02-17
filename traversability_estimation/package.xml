@@ -20,7 +20,7 @@
   <depend>grid_map_core</depend>
   <depend>grid_map_msgs</depend>
   <depend>grid_map_filters</depend>
-  <depend>traversability_msgs</depend>
+  <depend>traversability_interfaces</depend>
   <depend>traversability_estimation_filters</depend>
   <depend>std_msgs</depend>
   <depend>geometry_msgs</depend>

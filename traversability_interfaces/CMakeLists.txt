@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.1)
-project(traversability_msgs)
+project(traversability_interfaces)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -79,7 +79,7 @@ generate_messages(
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES traversability_msgs
+#  LIBRARIES traversability_interfaces
 #  CATKIN_DEPENDS other_catkin_pkg
 #  DEPENDS system_lib
 )
@@ -93,19 +93,19 @@ catkin_package(
 # include_directories(include)
 
 ## Declare a cpp library
-# add_library(traversability_msgs
-#   src/${PROJECT_NAME}/traversability_msgs.cpp
+# add_library(traversability_interfaces
+#   src/${PROJECT_NAME}/traversability_interfaces.cpp
 # )
 
 ## Declare a cpp executable
-# add_executable(traversability_msgs_node src/traversability_msgs_node.cpp)
+# add_executable(traversability_interfaces_node src/traversability_interfaces_node.cpp)
 
 ## Add cmake target dependencies of the executable/library
 ## as an example, message headers may need to be generated before nodes
-# add_dependencies(traversability_msgs_node traversability_msgs_generate_messages_cpp)
+# add_dependencies(traversability_interfaces_node traversability_interfaces_generate_messages_cpp)
 
 ## Specify libraries to link a library or executable target against
-# target_link_libraries(traversability_msgs_node
+# target_link_libraries(traversability_interfaces_node
 #   ${catkin_LIBRARIES}
 # )
 
@@ -124,7 +124,7 @@ catkin_package(
 # )
 
 ## Mark executables and/or libraries for installation
-# install(TARGETS traversability_msgs traversability_msgs_node
+# install(TARGETS traversability_interfaces traversability_interfaces_node
 #   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
@@ -149,7 +149,7 @@ catkin_package(
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_traversability_msgs.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_traversability_interfaces.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()

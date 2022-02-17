@@ -22,7 +22,7 @@ find_package(catkin REQUIRED COMPONENTS
   tf
   tf_conversions
   traversability_estimation_filters
-  traversability_msgs
+  traversability_interfaces
   std_msgs
   geometry_msgs
   sensor_msgs
@@ -62,7 +62,7 @@ catkin_package(
     tf
     tf_conversions
     traversability_estimation_filters
-    traversability_msgs
+    traversability_interfaces
     std_msgs
     geometry_msgs
     sensor_msgs
