@@ -10,7 +10,6 @@
 #define FILTERS__STEPFILTER_HPP_
 
 #include <filters/filter_base.hpp>
-#include <rclcpp/logging.hpp>
 
 #include <string>
 
