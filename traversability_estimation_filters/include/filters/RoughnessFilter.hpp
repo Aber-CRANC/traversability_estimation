@@ -6,13 +6,15 @@
  *   Institute: ETH Zurich, Autonomous Systems Lab
  */
 
-#ifndef ROUGHNESSFILTER_HPP
-#define ROUGHNESSFILTER_HPP
+#ifndef FILTERS__ROUGHNESSFILTER_HPP_
+#define FILTERS__ROUGHNESSFILTER_HPP_
 
-#include <filters/filter_base.h>
+#include <filters/filter_base.hpp>
+
 #include <string>
 
-namespace filters {
+namespace filters
+{
 
 /*!
  * Roughness Filter class to compute the roughness traversability value of an elevation map.
@@ -20,8 +22,7 @@ namespace filters {
 template<typename T>
 class RoughnessFilter : public FilterBase<T>
 {
-
- public:
+public:
   /*!
    * Constructor
    */
@@ -45,10 +46,9 @@ class RoughnessFilter : public FilterBase<T>
    * @param mapIn grid map containing elevation map and surface normals.
    * @param mapOut grid map containing mapIn and roughness traversability values.
    */
-  virtual bool update(const T& mapIn, T& mapOut);
+  virtual bool update(const T & mapIn, T & mapOut);
 
- private:
-
+private:
   //! Maximum allowed roughness.
   double criticalValue_;
 
@@ -59,6 +59,6 @@ class RoughnessFilter : public FilterBase<T>
   std::string type_;
 };
 
-} /* namespace */
+}  // namespace filters
 
-#endif
+#endif  // FILTERS__ROUGHNESSFILTER_HPP_

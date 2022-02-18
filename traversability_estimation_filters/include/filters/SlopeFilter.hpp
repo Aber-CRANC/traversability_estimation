@@ -6,15 +6,16 @@
  *   Institute: ETH Zurich, Autonomous Systems Lab
  */
 
-#ifndef SLOPEFILTER_HPP
-#define SLOPEFILTER_HPP
+#ifndef FILTERS__SLOPEFILTER_HPP_
+#define FILTERS__SLOPEFILTER_HPP_
 
-#include <filters/filter_base.h>
-#include <ros/ros.h>
+#include <filters/filter_base.hpp>
+#include <rclcpp/logging.hpp>
 
 #include <string>
 
-namespace filters {
+namespace filters
+{
 
 /*!
  * Slope Filter class to compute the slope traversability value of an elevation map.
@@ -22,8 +23,7 @@ namespace filters {
 template<typename T>
 class SlopeFilter : public FilterBase<T>
 {
-
- public:
+public:
   /*!
    * Constructor
    */
@@ -47,10 +47,9 @@ class SlopeFilter : public FilterBase<T>
    * @param mapIn grid map containing elevation map and surface normals.
    * @param mapOut grid map containing mapIn and slope traversability values.
    */
-  virtual bool update(const T& mapIn, T& mapOut);
+  virtual bool update(const T & mapIn, T & mapOut);
 
- private:
-
+private:
   //! Maximum allowed slope.
   double criticalValue_;
 
@@ -58,6 +57,6 @@ class SlopeFilter : public FilterBase<T>
   std::string type_;
 };
 
-} /* namespace */
+}  // namespace filters
 
-#endif
+#endif  // FILTERS__SLOPEFILTER_HPP_

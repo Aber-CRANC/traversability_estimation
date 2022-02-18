@@ -6,14 +6,16 @@
  *   Institute: ETH Zurich, Autonomous Systems Lab
  */
 
-#ifndef STEPFILTER_HPP
-#define STEPFILTER_HPP
+#ifndef FILTERS__STEPFILTER_HPP_
+#define FILTERS__STEPFILTER_HPP_
 
-#include <filters/filter_base.h>
+#include <filters/filter_base.hpp>
+#include <rclcpp/logging.hpp>
 
 #include <string>
 
-namespace filters {
+namespace filters
+{
 
 /*!
  * Step Filter class to compute the step traversability value of an elevation map.
@@ -21,8 +23,7 @@ namespace filters {
 template<typename T>
 class StepFilter : public FilterBase<T>
 {
-
- public:
+public:
   /*!
    * Constructor
    */
@@ -46,10 +47,9 @@ class StepFilter : public FilterBase<T>
    * @param mapIn grid map containing elevation map and surface normals.
    * @param mapOut grid map containing mapIn and step traversability values.
    */
-  virtual bool update(const T& mapIn, T& mapOut);
+  virtual bool update(const T & mapIn, T & mapOut);
 
- private:
-
+private:
   //! Maximum allowed step.
   double criticalValue_;
 
@@ -63,6 +63,6 @@ class StepFilter : public FilterBase<T>
   std::string type_;
 };
 
-} /* namespace */
+}  // namespace filters
 
-#endif
+#endif  // FILTERS__STEPFILTER_HPP_
