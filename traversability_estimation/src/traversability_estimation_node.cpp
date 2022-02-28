@@ -6,17 +6,25 @@
  *   Institute: ETH Zurich, Autonomous Systems Lab
  */
 
-#include <ros/ros.h>
 #include "traversability_estimation/TraversabilityEstimation.hpp"
 
-int main(int argc, char** argv) {
-  ros::init(argc, argv, "traversability_estimation");
-  ros::NodeHandle nodeHandle("~");
-  traversability_estimation::TraversabilityEstimation traversabilityEstimation(nodeHandle);
+#include <rclcpp/rclcpp.hpp>
 
-  // Spin
-  ros::AsyncSpinner spinner(0);  // Use n threads
-  spinner.start();
-  ros::waitForShutdown();
-  return 0;
+int main(int argc, char** argv) {
+  rclcpp::init(argc, argv);
+
+  rclcpp::executors::MultiThreadedExecutor executor;
+
+  rclcpp::NodeOptions options;
+  options.use_intra_process_comms(true);
+
+  auto traversabilityEstimation = std::make_shared<traversability_estimation::TraversabilityEstimation>(options);
+
+  executor.add_node(traversabilityEstimation);
+
+  executor.spin();
+
+  rclcpp::shutdown();
+
+  return EXIT_SUCCESS;
 }

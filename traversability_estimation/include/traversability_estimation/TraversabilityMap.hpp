@@ -9,25 +9,26 @@
 #pragma once
 
 // Traversability
-#include <traversability_interfaces/FootprintPath.h>
-#include <traversability_interfaces/TraversabilityResult.h>
+#include <traversability_interfaces/msg/footprint_path.hpp>
+#include <traversability_interfaces/msg/traversability_result.hpp>
 
 // Grid Map
 #include <grid_map_ros/grid_map_ros.hpp>
 
 // ROS
-#include <filters/filter_chain.h>
-#include <ros/ros.h>
-#include <sensor_msgs/Image.h>
-#include <std_srvs/Empty.h>
-#include <tf/transform_listener.h>
+#include <filters/filter_chain.hpp>
+#include <rclcpp/rclcpp.hpp>
+#include <sensor_msgs/msg/image.hpp>
+#include <std_srvs/srv/empty.hpp>
+#include <tf2_ros/buffer.h>
+#include <tf2_ros/transform_listener.h>
 
 // STD
 #include <string>
 #include <vector>
 
 // Boost
-#include <boost/thread/recursive_mutex.hpp>
+// #include <boost/thread/recursive_mutex.hpp>
 
 namespace traversability_estimation {
 
@@ -44,7 +45,12 @@ class TraversabilityMap {
   /*!
    * Constructor.
    */
-  TraversabilityMap(ros::NodeHandle& nodeHandle);
+  TraversabilityMap(
+    rclcpp::Publisher<grid_map_msgs::msg::GridMap>::SharedPtr mapPublisher,
+    rclcpp::Publisher<geometry_msgs::msg::PolygonStamped>::SharedPtr footprintPublisher_,
+    rclcpp::Publisher<geometry_msgs::msg::PolygonStamped>::SharedPtr untraversablePolygonPublisher_,
+    rclcpp::Clock::SharedPtr nodeClock
+  );//rclcpp::Node::SharedPtr node);
 
   /*!
    * Destructor.
@@ -66,7 +72,7 @@ class TraversabilityMap {
    * @param[out] result the traversability result.
    * @return true if successful.
    */
-  bool checkFootprintPath(const traversability_interfaces::FootprintPath& path, traversability_interfaces::TraversabilityResult& result,
+  bool checkFootprintPath(const traversability_interfaces::msg::FootprintPath& path, traversability_interfaces::msg::TraversabilityResult& result,
                           const bool publishPolygons = false);
 
   /*!
@@ -89,27 +95,30 @@ class TraversabilityMap {
    * The filter chain is reconfigured with the actual parameter on the parameter server.
    * @return true if successful.
    */
-  bool updateFilter();
+  // bool updateFilter();
 
   /*!
    * Set the traversability map from layers of a grid_map_msgs::GridMap.
    * @param[in] msg grid map with the layers of a traversability map.
    * @return true if successful.
    */
-  bool setTraversabilityMap(const grid_map_msgs::GridMap& msg);
+  bool setTraversabilityMap(const grid_map_msgs::msg::GridMap& msg);
 
   /*!
    * Set the elevation map from layers of a grid_map_msgs::GridMap.
    * @param[in] msg grid map with a layer 'elevation'.
    * @return true if successful.
    */
-  bool setElevationMap(const grid_map_msgs::GridMap& msg);
+  bool setElevationMap(const grid_map::GridMap& map);
 
   /*!
    * Get the traversability map.
    * @return the requested traversability map.
    */
   grid_map::GridMap getTraversabilityMap();
+
+  grid_map_msgs::msg::GridMap::UniquePtr getTraversabilityMapMsg(const std::vector<std::string> & layers);
+
 
   /*!
    * Resets the cached traversability values.
@@ -165,13 +174,12 @@ class TraversabilityMap {
    */
   bool createLayers(bool useRawMap);
 
- private:
   /*!
    * Reads and verifies the ROS parameters.
    * @return true if successful.
    */
-  bool readParameters();
-
+  bool readParameters(const rclcpp::Node::SharedPtr node);
+ private:
   /*!
    * Gets the traversability value of the submap defined by the polygon. Is true if the whole polygon is traversable.
    * @param[in] polygon polygon that defines submap of the traversability map.
@@ -289,8 +297,8 @@ class TraversabilityMap {
    * @param[out] result the traversability result.
    * @return true if successful.
    */
-  bool checkCircularFootprintPath(const traversability_interfaces::FootprintPath& path, const bool publishPolygons,
-                                  traversability_interfaces::TraversabilityResult& result);
+  bool checkCircularFootprintPath(const traversability_interfaces::msg::FootprintPath& path, const bool publishPolygons,
+                                  traversability_interfaces::msg::TraversabilityResult& result);
 
   /*!
    * Checks the traversability of a polygonal footprint path and returns the traversability.
@@ -299,8 +307,8 @@ class TraversabilityMap {
    * @param[out] result the traversability result.
    * @return true if successful.
    */
-  bool checkPolygonalFootprintPath(const traversability_interfaces::FootprintPath& path, const bool publishPolygons,
-                                   traversability_interfaces::TraversabilityResult& result);
+  bool checkPolygonalFootprintPath(const traversability_interfaces::msg::FootprintPath& path, const bool publishPolygons,
+                                   traversability_interfaces::msg::TraversabilityResult& result);
 
   /*!
    * Computes mean height from poses.
@@ -311,7 +319,7 @@ class TraversabilityMap {
   double computeMeanHeightFromPoses(const std::vector<Type>& poses) const {
     auto meanHeight = 0.0;
     if (poses.size() != 0) {
-      for (int i = 0; i < poses.size(); i++) {
+      for (size_t i = 0; i < poses.size(); i++) {
         meanHeight += poses.at(i).position.z;
       }
       meanHeight /= poses.size();
@@ -320,8 +328,7 @@ class TraversabilityMap {
     return meanHeight;
   }
 
-  //! ROS node handle.
-  ros::NodeHandle& nodeHandle_;
+  rclcpp::Clock::SharedPtr nodeClock_;
 
   //! Id of the frame of the elevation map.
   std::string mapFrameId_;
@@ -330,16 +337,16 @@ class TraversabilityMap {
   std::string robotFrameId_;
 
   //! Publisher of the traversability map.
-  ros::Publisher traversabilityMapPublisher_;
+  rclcpp::Publisher<grid_map_msgs::msg::GridMap>::SharedPtr traversabilityMapPublisher_;
 
   //! Footprint publisher.
-  ros::Publisher footprintPublisher_;
+  rclcpp::Publisher<geometry_msgs::msg::PolygonStamped>::SharedPtr footprintPublisher_;
 
   //! Untraversable polygon publisher
-  ros::Publisher untraversablePolygonPublisher_;
+  rclcpp::Publisher<geometry_msgs::msg::PolygonStamped>::SharedPtr untraversablePolygonPublisher_;
 
   //! Vertices of the footprint polygon in base frame.
-  std::vector<geometry_msgs::Point32> footprintPoints_;
+  std::vector<geometry_msgs::msg::Point32> footprintPoints_;
 
   //! Robot parameter
   double maxGapWidth_;
@@ -376,12 +383,15 @@ class TraversabilityMap {
   std::vector<std::string> elevationMapLayers_;
   bool elevationMapInitialized_;
 
+  //! System clock
+  rclcpp::Clock::SharedPtr steadyClock_;
+
   //! Mutex lock for traversability map.
-  mutable boost::recursive_mutex traversabilityMapMutex_;
-  mutable boost::recursive_mutex elevationMapMutex_;
+  mutable std::recursive_mutex traversabilityMapMutex_;
+  mutable std::recursive_mutex elevationMapMutex_;
 
   //! Z-position of the robot pose belonging to this map.
-  double zPosition_;
+  // double zPosition_;
 };
 
 }  // namespace traversability_estimation
